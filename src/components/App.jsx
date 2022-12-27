@@ -3,6 +3,8 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 
+import styles  from './App.module.css';
+
 export class App  extends Component {
   state = {
     contacts: [
@@ -23,13 +25,12 @@ export class App  extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
     console.log(this.state);
     this.setState({ name: ''});
   };
   render(){
     return (
-      <div>
+      <div className={styles.conteiner}>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.handleSubmit}/>
 
