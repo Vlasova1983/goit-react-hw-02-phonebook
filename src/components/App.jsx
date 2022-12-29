@@ -4,7 +4,7 @@ import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 
 import styles  from './App.module.css';
-import { number } from "prop-types";
+
 
 export class App  extends Component {
   state = {
@@ -28,7 +28,7 @@ export class App  extends Component {
     const newId = this.getRandomID();   
     this.setState({name: '',number: ''});
          
-    this.state.contacts.push({id:newId, name:this.state.name,number:this.state.number});
+    this.state.contacts.push({id:newId, name:this.state.name, number:this.state.number});
   
     console.log(this.state);
   };
