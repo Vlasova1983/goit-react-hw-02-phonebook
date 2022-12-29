@@ -1,16 +1,20 @@
 import { PropTypes } from 'prop-types';
+import { Contact } from '../Contact/Contact';
+import styles  from '../ContactList/ContactList.module.css';
 
-export const ContactList = ({options}) => {
+export const ContactList = ({contacts,onDelete}) => {
+  
     return (
-        <ul className="">
-            {options.map(key=>( 
-                <li key={key.id}>{key.name}</li>
-            ))}            
-        </ul>      
+        <div className={styles.contact_list}>            
+            {contacts.map(contact=>( 
+                <Contact key={contact.id} contact={contact} onDelete={onDelete} />                
+            ))}         
+        </div>            
     );
   };
 
 ContactList.propTypes = {       
-    options: PropTypes.arrayOf( PropTypes.shape())
+    options: PropTypes.arrayOf( PropTypes.shape()),
+    onDelete:PropTypes.func
 }
     
