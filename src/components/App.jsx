@@ -4,6 +4,7 @@ import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 
 import styles  from './App.module.css';
+import { number } from "prop-types";
 
 export class App  extends Component {
   state = {
@@ -13,30 +14,54 @@ export class App  extends Component {
         {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
         {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
     ],
-    name: '', 
-    filter: '',    
-    number: ''  
+    name: '',       
+    number: ''    
   };
 
-  handleChange = event => {
+  handleChange = event => {    
     const { name, value } = event.target;
-    this.setState({ [name]: value });
-  };
+    this.setState({ [name]: value });     
+  };  
 
   handleSubmit = event => {
     event.preventDefault();
+    const newId = this.getRandomID();   
+    this.setState({name: '',number: ''});
+         
+    this.state.contacts.push({id:newId, name:this.state.name,number:this.state.number});
+  
     console.log(this.state);
-    this.setState({ name: ''});
   };
-  render(){
+
+  handleFilterContacts =(value)=>{     
+    this.setState(prevState=>{
+     const newContactsList = prevState.contacts.filter((contact)=>contact.name.toLowerCase().includes(value));
+     return{contacts:newContactsList};
+    });
+   };
+
+  handleDeleteContact =(id)=>{   
+   this.setState(prevState=>{
+    const newContactsList = prevState.contacts.filter((contact)=>contact.id !== id);
+    return{contacts:newContactsList};
+   });
+  };
+
+  getRandomID() {
+    return `${Math.floor(Math.random() * 16777215).toString(16)}`;
+  }
+  
+  render(){ 
+    const   {contacts} = this.state;
+    const {name,number} = this.state
     return (
       <div className={styles.conteiner}>
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.handleSubmit}/>
+        <ContactForm name={name} number={number}  onSubmit={this.handleSubmit}  onChangeName={this.handleChange}  />
 
         <h2>Contacts</h2>
-        <Filter/>
-        <ContactList options={this.state.contacts}/>
+        <Filter onFilter={this.handleFilterContacts}/>
+        <ContactList contacts={contacts} onDelete={this.handleDeleteContact} />
       </div>
     );
   }   
