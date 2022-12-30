@@ -9,42 +9,41 @@ import styles  from './App.module.css';
 export class App  extends Component {
   state = {
     contacts: [
-        {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-        {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-        {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-        {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
     ],
-    name: '',       
-    number: ''    
+    filter: '',        
   };
 
-  handleChange = event => {    
-    const { name, value } = event.target;
-    this.setState({ [name]: value });     
-  };  
+  isContactInState = ({ name, number }) =>
+    !!this.state.contacts.filter(({ name: prevName, number: prevNumber }) => {
+      return prevName === name && prevNumber === number;
+    }).length;
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const newId = this.getRandomID();   
-    this.setState({name: '',number: ''});
-         
-    this.state.contacts.push({id:newId, name:this.state.name, number:this.state.number});
-  
-    console.log(this.state);
+  handleSubmit = ({ name, number }) => { 
+    if (this.isContactInState({ name, number })) {
+      alert('Contact is in phonebook');
+      return;    
+    }
+
+    this.setState(({ contacts: prevState }) => ({
+      contacts: [...prevState, { id:this.getRandomID(), name, number }],
+    }));   
   };
 
-  handleFilterContacts =(value)=>{     
-    this.setState(prevState=>{
-     const newContactsList = prevState.contacts.filter((contact)=>contact.name.toLowerCase().includes(value));
-     return{contacts:newContactsList};
-    });
-   };
+  handleFilterContacts =(value)=>{ 
+    this.setState({filter:value});   
+    return this.state.contacts.filter((contact)=>contact.name.toLowerCase().includes(value));      
+       
+  };
 
   handleDeleteContact =(id)=>{   
-   this.setState(prevState=>{
-    const newContactsList = prevState.contacts.filter((contact)=>contact.id !== id);
-    return{contacts:newContactsList};
-   });
+   this.setState(prevState=>{   
+    return{contacts:prevState.contacts.filter((contact)=>contact.id !== id)};
+    });
+    console.log(this.state)
   };
 
   getRandomID() {
@@ -52,15 +51,15 @@ export class App  extends Component {
   }
   
   render(){ 
-    const   {contacts} = this.state;
-    const {name,number} = this.state
+    const   {filter,contacts} = this.state;
+    
     return (
       <div className={styles.conteiner}>
         <h1>Phonebook</h1>
-        <ContactForm name={name} number={number}  onSubmit={this.handleSubmit}  onChangeName={this.handleChange}  />
+        <ContactForm   onSubmit={this.handleSubmit}/>
 
         <h2>Contacts</h2>
-        <Filter onFilter={this.handleFilterContacts}/>
+        <Filter filter={filter} onFilter={this.handleFilterContacts}/>
         <ContactList contacts={contacts} onDelete={this.handleDeleteContact} />
       </div>
     );
