@@ -42,8 +42,7 @@ export class App  extends Component {
   handleDeleteContact =(id)=>{   
    this.setState(prevState=>{   
     return{contacts:prevState.contacts.filter((contact)=>contact.id !== id)};
-    });
-    console.log(this.state)
+    });   
   };
 
   getRandomID() {
@@ -52,7 +51,7 @@ export class App  extends Component {
   
   render(){ 
     const   {filter,contacts} = this.state;
-    
+      
     return (
       <div className={styles.conteiner}>
         <h1>Phonebook</h1>
@@ -60,7 +59,7 @@ export class App  extends Component {
 
         <h2>Contacts</h2>
         <Filter filter={filter} onFilter={this.handleFilterContacts}/>
-        <ContactList contacts={contacts} onDelete={this.handleDeleteContact} />
+        <ContactList contacts={contacts} onDelete={this.handleDeleteContact}/>               
       </div>
     );
   }   
