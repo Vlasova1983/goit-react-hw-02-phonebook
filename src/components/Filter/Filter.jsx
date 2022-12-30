@@ -1,13 +1,11 @@
-// import { PropTypes } from 'prop-types';
+import { PropTypes } from 'prop-types';
 import styles  from '../Filter/Filter.module.css';
 
 
-export const Filter = ({onFilter}) => {
+export const Filter = ({filter, onFilter}) => {
 
-    const handleFilter = event =>{
-        const nameFilter = event.target.value.toLowerCase()
-        console.log(nameFilter);
-        onFilter(nameFilter);
+    const handleFilter = event =>{              
+        onFilter(event.target.value.toLowerCase());
     };
 
     return (
@@ -19,6 +17,7 @@ export const Filter = ({onFilter}) => {
                 id="filter"
                 type="text"
                 name="filter"
+                value={filter}
                 onChange={handleFilter}               
                 pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -27,3 +26,8 @@ export const Filter = ({onFilter}) => {
         </div>      
     );
   };
+
+  Filter.propTypes = {
+    filter: PropTypes.string.isRequired,
+    onFilter:PropTypes.func.isRequired,
+  }
