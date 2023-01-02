@@ -20,10 +20,10 @@ export class App  extends Component {
   isContactInState = ({ name }) =>
     !!this.state.contacts.filter(({name: prevName}) => {
       return prevName === name 
-    }).length;
+  }).length;
 
   handleSubmit = ({ name, number }) => { 
-    if (this.isContactInState({ name, number })) {
+    if (this.isContactInState({ name })) {
       alert('Contact is in phonebook');
       return;    
     }
