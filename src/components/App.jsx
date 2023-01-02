@@ -53,7 +53,7 @@ export class App  extends Component {
   }
   
   render(){ 
-    const   {filter,contacts} = this.state;
+    const   {filter} = this.state;
       
     return (
       <div className={styles.conteiner}>
