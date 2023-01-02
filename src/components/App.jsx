@@ -17,9 +17,9 @@ export class App  extends Component {
     filter: '',        
   };
 
-  isContactInState = ({ name, number }) =>
-    !!this.state.contacts.filter(({ name: prevName, number: prevNumber }) => {
-      return prevName === name && prevNumber === number;
+  isContactInState = ({ name }) =>
+    !!this.state.contacts.filter(({name: prevName}) => {
+      return prevName === name 
     }).length;
 
   handleSubmit = ({ name, number }) => { 
@@ -34,10 +34,13 @@ export class App  extends Component {
   };
 
   handleFilterContacts =(value)=>{ 
-    this.setState({filter:value});   
-    return this.state.contacts.filter((contact)=>contact.name.toLowerCase().includes(value));      
-       
+    this.setState({filter:value});       
   };
+
+  getFilterContact() {
+    return this.state.contacts.filter((contact)=>contact.name.toLowerCase().includes(this.state.filter));
+  }
+
 
   handleDeleteContact =(id)=>{   
    this.setState(prevState=>{   
@@ -59,7 +62,7 @@ export class App  extends Component {
 
         <h2>Contacts</h2>
         <Filter filter={filter} onFilter={this.handleFilterContacts}/>
-        <ContactList contacts={contacts} onDelete={this.handleDeleteContact}/>               
+        <ContactList contacts={this.getFilterContact()} onDelete={this.handleDeleteContact}/>               
       </div>
     );
   }   
